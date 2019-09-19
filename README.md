@@ -1,0 +1,2 @@
+# YCGroupAdapter
+按组划分的自定义adapter适配器，一个recyclerView可以完成强大的group+children类型的业务需求
