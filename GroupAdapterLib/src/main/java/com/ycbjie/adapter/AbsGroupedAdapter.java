@@ -25,10 +25,10 @@ import java.util.ArrayList;
  */
 public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int TYPE_HEADER = 1;
-    public static final int TYPE_FOOTER = 2;
-    public static final int TYPE_CHILD = 3;
-    public static final int TYPE_NO = 4;
+    private static final int TYPE_HEADER = 1;
+    static final int TYPE_FOOTER = 2;
+    static final int TYPE_CHILD = 3;
+    private static final int TYPE_NO = 4;
 
     private OnHeaderClickListener mOnHeaderClickListener;
     private OnFooterClickListener mOnFooterClickListener;
@@ -43,19 +43,30 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
      * 数据是否发生变化。如果数据发生变化，要及时更新组结构。
      */
     private boolean isDataChanged;
-    private int mTempPosition;
+    /**
+     * itemViewType类型
+     */
+    private int itemType;
 
     public AbsGroupedAdapter(Context context) {
         mContext = context;
         registerAdapterDataObserver(new GroupDataObserver());
     }
 
+    /**
+     * 这个方法最先调用，与recyclerView绑定，可以做初始化工作
+     * @param recyclerView                          recyclerView
+     */
     @Override
     public void onAttachedToRecyclerView(@NotNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         structureChanged();
     }
 
+    /**
+     * 瀑布流视图中，item中view与window绑定时调用，也就是说view处于可见时会调用该方法
+     * @param holder                                holder
+     */
     @Override
     public void onViewAttachedToWindow(@NotNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
@@ -65,6 +76,11 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
+    /**
+     * 判断是否是瀑布流视图
+     * @param holder                                holder
+     * @return
+     */
     private boolean isStaggeredGridLayout(RecyclerView.ViewHolder holder) {
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
         if (layoutParams != null && layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
@@ -73,6 +89,11 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
         return false;
     }
 
+    /**
+     * 注意，在瀑布流视图中，header和footer视图布局，设置setFullSpan为true，也就是说占一行
+     * @param holder                                holder
+     * @param position                              索引
+     */
     private void handleLayoutIfStaggeredGridLayout(RecyclerView.ViewHolder holder, int position) {
         if (judgeType(position) == TYPE_HEADER || judgeType(position) == TYPE_FOOTER) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams)
@@ -86,7 +107,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
     public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View view;
         if (viewType != TYPE_NO){
-            int layoutId = getLayoutId(mTempPosition, viewType);
+            int layoutId = getLayoutId(itemType, viewType);
             view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
         } else {
             //使用空布局
@@ -156,7 +177,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        mTempPosition = position;
+        itemType = position;
         int type = judgeType(position);
         if (type == TYPE_HEADER) {
             return TYPE_HEADER;
@@ -1049,6 +1070,8 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
     public void setOnChildClickListener(OnChildClickListener listener) {
         mOnChildClickListener = listener;
     }
+
+    /*-----------------------------------下面这些是抽象方法-----------------------------------------*/
 
     public abstract int getGroupCount();
 
