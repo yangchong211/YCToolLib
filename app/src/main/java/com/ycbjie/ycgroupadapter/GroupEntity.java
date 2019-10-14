@@ -10,11 +10,19 @@ public class GroupEntity {
     private String header;
     private String footer;
     private ArrayList<ChildEntity> children;
+    private boolean isExpand;
 
     public GroupEntity(String header, String footer, ArrayList<ChildEntity> children) {
         this.header = header;
         this.footer = footer;
         this.children = children;
+    }
+
+    public GroupEntity(String header, String footer, ArrayList<ChildEntity> children, boolean isExpand) {
+        this.header = header;
+        this.footer = footer;
+        this.children = children;
+        this.isExpand = isExpand;
     }
 
     public String getHeader() {
@@ -40,4 +48,14 @@ public class GroupEntity {
     public void setChildren(ArrayList<ChildEntity> children) {
         this.children = children;
     }
+
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
+    }
+
 }

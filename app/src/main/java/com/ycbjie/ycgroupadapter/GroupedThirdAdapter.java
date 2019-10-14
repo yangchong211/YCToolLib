@@ -2,7 +2,6 @@ package com.ycbjie.ycgroupadapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ycbjie.adapter.AbsGroupedAdapter;
@@ -20,11 +19,11 @@ import java.util.List;
  *     revise:
  * </pre>
  */
-public class GroupedListAdapter extends AbsGroupedAdapter {
+public class GroupedThirdAdapter extends AbsGroupedAdapter {
 
     private List<GroupEntity> mGroups;
 
-    public GroupedListAdapter(Context context, List<GroupEntity> groups) {
+    public GroupedThirdAdapter(Context context, List<GroupEntity> groups) {
         super(context);
         mGroups = groups;
     }
@@ -45,7 +44,7 @@ public class GroupedListAdapter extends AbsGroupedAdapter {
 
     @Override
     public boolean hasHeader(int groupPosition) {
-        return true;
+        return false;
     }
 
     @Override
@@ -55,17 +54,17 @@ public class GroupedListAdapter extends AbsGroupedAdapter {
 
     @Override
     public int getHeaderLayout(int viewType) {
-        return R.layout.item_car_picture_header;
+        return R.layout.item_text_header;
     }
 
     @Override
     public int getFooterLayout(int viewType) {
-        return R.layout.item_car_picture_footer;
+        return R.layout.item_text_footer;
     }
 
     @Override
     public int getChildLayout(int viewType) {
-        return R.layout.item_car_picture_view;
+        return R.layout.item_content_view;
     }
 
     @Override
@@ -78,16 +77,14 @@ public class GroupedListAdapter extends AbsGroupedAdapter {
     @Override
     public void onBindFooterViewHolder(GroupViewHolder holder, int groupPosition) {
         GroupEntity entity = mGroups.get(groupPosition);
-        ImageView imageView = holder.get(R.id.iv_image);
         TextView tvFooterMore = holder.get(R.id.tv_footer_more);
         String footer = entity.getFooter();
         if (footer==null || footer.length()==0){
             //设置不可见
-            imageView.setVisibility(View.GONE);
             tvFooterMore.setVisibility(View.GONE);
         } else {
             //设置可见
-            imageView.setVisibility(View.VISIBLE);
+            tvFooterMore.setText(footer);
             tvFooterMore.setVisibility(View.VISIBLE);
         }
     }
@@ -95,7 +92,8 @@ public class GroupedListAdapter extends AbsGroupedAdapter {
     @Override
     public void onBindChildViewHolder(GroupViewHolder holder, int groupPosition, int childPosition) {
         ChildEntity entity = mGroups.get(groupPosition).getChildren().get(childPosition);
-        ImageView imageView = holder.get(R.id.iv_image);
+        TextView tv_content = holder.get(R.id.tv_content);
+        tv_content.setText(entity.getChild());
     }
 
 }

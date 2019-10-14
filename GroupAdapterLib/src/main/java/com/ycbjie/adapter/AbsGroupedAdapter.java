@@ -175,19 +175,35 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
         return count();
     }
 
+
     @Override
     public int getItemViewType(int position) {
         itemType = position;
+        int groupPosition = getGroupPositionForPosition(position);
         int type = judgeType(position);
         if (type == TYPE_HEADER) {
-            return TYPE_HEADER;
+            return getHeaderViewType(groupPosition);
         } else if (type == TYPE_FOOTER) {
-            return TYPE_FOOTER;
+            return getFooterViewType(groupPosition);
         } else if (type == TYPE_CHILD) {
-            return TYPE_CHILD;
+            int childPosition = getChildPositionForPosition(groupPosition, position);
+            return getChildViewType(groupPosition, childPosition);
         }
         return super.getItemViewType(position);
     }
+
+    public int getHeaderViewType(int groupPosition) {
+        return TYPE_HEADER;
+    }
+
+    public int getFooterViewType(int groupPosition) {
+        return TYPE_FOOTER;
+    }
+
+    public int getChildViewType(int groupPosition, int childPosition) {
+        return TYPE_CHILD;
+    }
+
 
     private int getLayoutId(int position, int viewType) {
         int type = judgeType(position);

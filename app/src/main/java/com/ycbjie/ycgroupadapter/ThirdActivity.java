@@ -3,13 +3,12 @@ package com.ycbjie.ycgroupadapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ycbjie.adapter.AbsGroupedAdapter;
 import com.ycbjie.adapter.GroupViewHolder;
-import com.ycbjie.adapter.GroupedLayoutManager;
 import com.ycbjie.adapter.OnChildClickListener;
 import com.ycbjie.adapter.OnFooterClickListener;
 import com.ycbjie.adapter.OnHeaderClickListener;
@@ -17,9 +16,9 @@ import com.ycbjie.adapter.OnHeaderClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstActivity extends AppCompatActivity {
+public class ThirdActivity extends AppCompatActivity {
 
-    private GroupedFirstAdapter mAdapter;
+    private GroupedThirdAdapter mAdapter;
     private List<GroupEntity> list = new ArrayList<>();
 
     @Override
@@ -28,12 +27,14 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.base_recycler_view);
 
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
-        mAdapter = new GroupedFirstAdapter(this, list);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new GroupedThirdAdapter(this, list);
         mAdapter.setOnHeaderClickListener(new OnHeaderClickListener() {
             @Override
             public void onHeaderClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
-                Toast.makeText(FirstActivity.this,
+                Toast.makeText(ThirdActivity.this,
                         "组头：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
             }
         });
@@ -41,42 +42,22 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onFooterClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
-                Toast.makeText(FirstActivity.this,
+                Toast.makeText(ThirdActivity.this,
                         "组尾：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
-                GroupEntity groupEntity = list.get(groupPosition);
-                //设置footer点击后不可见状态
-                groupEntity.setFooter("");
-                ArrayList<ChildEntity> children = groupEntity.getChildren();
-                int size = children.size();
-                for (int j = 0; j < 10; j++) {
-                    children.add(new ChildEntity("逗比"));
-                }
-                mAdapter.notifyChildRangeInserted(groupPosition,size,10);
             }
         });
         mAdapter.setOnChildClickListener(new OnChildClickListener() {
             @Override
             public void onChildClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
                                      int groupPosition, int childPosition) {
-                Toast.makeText(FirstActivity.this,"子项：groupPosition = " + groupPosition
+                Toast.makeText(ThirdActivity.this,"子项：groupPosition = " + groupPosition
                         + ", childPosition = " + childPosition,Toast.LENGTH_LONG).show();
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-        //直接使用GroupGridLayoutManager实现子项的Grid效果
-        GroupedLayoutManager gridLayoutManager = new GroupedLayoutManager(this, 3, mAdapter){
-            //重写这个方法 改变子项的SpanSize。
-            //这个跟重写SpanSizeLookup的getSpanSize方法的使用是一样的。
-            @Override
-            public int getChildSpanSize(int groupPosition, int childPosition) {
-                return super.getChildSpanSize(groupPosition, childPosition);
-            }
-        };
-        mRecyclerView.setLayoutManager(gridLayoutManager);
 
         getData();
     }
-
 
 
     private void getData() {
@@ -97,12 +78,38 @@ public class FirstActivity extends AppCompatActivity {
         ArrayList<GroupEntity> groups = new ArrayList<>();
         for (int i = 0; i < groupCount; i++) {
             ArrayList<ChildEntity> children = new ArrayList<>();
-            for (int j = 0; j < childrenCount; j++) {
-                children.add(new ChildEntity("第" + (i + 1) + "组第" + (j + 1) + "项"));
+
+            switch (i){
+                case 0:
+                    for (int j = 0; j < 2; j++) {
+                        children.add(new ChildEntity("第" + (i + 1) + "组第" + (j + 1) + "项"));
+                    }
+                    break;
+                case 1:
+                    for (int j = 0; j < 4; j++) {
+                        children.add(new ChildEntity("第" + (i + 1) + "组第" + (j + 1) + "项"));
+                    }
+                    break;
+                case 2:
+                    for (int j = 0; j < 6; j++) {
+                        children.add(new ChildEntity("第" + (i + 1) + "组第" + (j + 1) + "项"));
+                    }
+                    break;
+                case 3:
+                    for (int j = 0; j < 3; j++) {
+                        children.add(new ChildEntity("第" + (i + 1) + "组第" + (j + 1) + "项"));
+                    }
+                    break;
+                default:
+                    for (int j = 0; j < childrenCount; j++) {
+                        children.add(new ChildEntity("第" + (i + 1) + "组第" + (j + 1) + "项"));
+                    }
+                    break;
             }
             groups.add(new GroupEntity("第" + (i + 1) + "组头部",
                     "第" + (i + 1) + "组尾部", children));
         }
         return groups;
     }
+
 }

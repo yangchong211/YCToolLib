@@ -13,6 +13,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.tv_1).setOnClickListener(this);
+        findViewById(R.id.tv_2).setOnClickListener(this);
+        findViewById(R.id.tv_3).setOnClickListener(this);
+        findViewById(R.id.tv_4).setOnClickListener(this);
+        findViewById(R.id.tv_5).setOnClickListener(this);
     }
 
     @Override
@@ -20,6 +24,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.tv_1:
                 startActivity(new Intent(this,FirstActivity.class));
+                break;
+            case R.id.tv_2:
+                startActivity(new Intent(this,SecondActivity.class));
+                break;
+            case R.id.tv_3:
+                startActivity(new Intent(this,ThirdActivity.class));
+                break;
+            case R.id.tv_4:
+                startActivity(new Intent(this,FourActivity.class));
+                break;
+            case R.id.tv_5:
+                startActivity(new Intent(this,FiveActivity.class));
                 break;
             default:
                 break;
