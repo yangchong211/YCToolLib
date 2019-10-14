@@ -14,6 +14,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="1.自定义图片查看器" />
+        android:text="1.仿懂车帝，汽车之家自定义图片查看器" />
 
 </LinearLayout>

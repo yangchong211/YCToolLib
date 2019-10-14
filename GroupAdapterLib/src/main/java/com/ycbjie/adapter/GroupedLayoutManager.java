@@ -11,14 +11,15 @@ import android.support.v7.widget.GridLayoutManager;
  *     desc  : 为分组列表提供的GridLayoutManager
  *     revise: 因为分组列表如果要使用GridLayoutManager实现网格布局。要保证组的头部和尾部是要单独占用一行的。
  *             否则组的头、尾可能会跟子项混着一起，造成布局混乱。
+ *             自定义layoutManager，https://github.com/yangchong211/YCGroupAdapter
  * </pre>
  */
-public class GroupedManager extends GridLayoutManager {
+public class GroupedLayoutManager extends GridLayoutManager {
 
     private AbsGroupedAdapter mAdapter;
 
-    public GroupedManager(Context context, int spanCount,
-                          AbsGroupedAdapter adapter) {
+    public GroupedLayoutManager(Context context, int spanCount,
+                                AbsGroupedAdapter adapter) {
         super(context, spanCount);
         mAdapter = adapter;
         setSpanSizeLookup();

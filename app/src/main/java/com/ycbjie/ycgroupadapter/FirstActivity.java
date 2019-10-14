@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.ycbjie.adapter.AbsGroupedAdapter;
 import com.ycbjie.adapter.GroupViewHolder;
-import com.ycbjie.adapter.GroupedManager;
+import com.ycbjie.adapter.GroupedLayoutManager;
 import com.ycbjie.adapter.OnChildClickListener;
 import com.ycbjie.adapter.OnFooterClickListener;
 import com.ycbjie.adapter.OnHeaderClickListener;
@@ -69,7 +69,7 @@ public class FirstActivity extends AppCompatActivity {
         });
         mRecyclerView.setAdapter(mAdapter);
         //直接使用GroupGridLayoutManager实现子项的Grid效果
-        GroupedManager gridLayoutManager = new GroupedManager(this, 3, mAdapter){
+        GroupedLayoutManager gridLayoutManager = new GroupedLayoutManager(this, 3, mAdapter){
             //重写这个方法 改变子项的SpanSize。
             //这个跟重写SpanSizeLookup的getSpanSize方法的使用是一样的。
             @Override

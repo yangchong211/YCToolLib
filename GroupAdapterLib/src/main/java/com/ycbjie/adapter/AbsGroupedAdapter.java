@@ -20,6 +20,7 @@ import java.util.ArrayList;
  *     revise: 这个类提供了一系列的对列表的更新、删除和插入等操作的方法。
  *             使用者要使用这些方法的列表进行操作，而不要直接使用RecyclerView.Adapter的方法。
  *             因为当分组列表发生变化时，需要及时更新分组列表的组结构{@link AbsGroupedAdapter#mStructures}
+ *             https://github.com/yangchong211/YCGroupAdapter
  * </pre>
  */
 public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
