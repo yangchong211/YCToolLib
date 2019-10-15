@@ -4,7 +4,7 @@ package com.ycbjie.adapter;
  * <pre>
  *     @author yangchong
  *     blog  : https://github.com/yangchong211
- *     time  : 2019/9/18
+ *     time  : 2018/9/18
  *     desc  : child点击事件
  *     revise: https://github.com/yangchong211/YCGroupAdapter
  * </pre>

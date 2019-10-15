@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * <pre>
  *     @author yangchong
  *     blog  : https://github.com/yangchong211
- *     time  : 2019/9/18
+ *     time  : 2018/9/18
  *     desc  : 通用的分组列表Adapter，通过它可以很方便的实现列表的分组效果。
  *     revise: 这个类提供了一系列的对列表的更新、删除和插入等操作的方法。
  *             使用者要使用这些方法的列表进行操作，而不要直接使用RecyclerView.Adapter的方法。
@@ -48,10 +48,16 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
      * itemViewType类型
      */
     private int itemType;
+    /**
+     * 布局填充inflater
+     */
+    private LayoutInflater inflater;
+
 
     public AbsGroupedAdapter(Context context) {
         mContext = context;
         registerAdapterDataObserver(new GroupDataObserver());
+        inflater = LayoutInflater.from(mContext);
     }
 
     /**
@@ -109,9 +115,13 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
         View view;
         if (viewType != TYPE_NO){
             int layoutId = getLayoutId(itemType, viewType);
-            view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+            if (inflater==null){
+                inflater = LayoutInflater.from(mContext);
+            }
+            view = inflater.inflate(layoutId, parent, false);
         } else {
             //使用空布局
+            //未知类型可以使用空布局代替
             view = new View(parent.getContext());
         }
         return new GroupViewHolder(view);

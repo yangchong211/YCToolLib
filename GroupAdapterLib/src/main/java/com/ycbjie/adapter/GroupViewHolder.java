@@ -13,7 +13,7 @@ import android.widget.TextView;
  * <pre>
  *     @author yangchong
  *     blog  : https://github.com/yangchong211
- *     time  : 2019/9/18
+ *     time  : 2018/9/18
  *     desc  : 通用的RecyclerView.ViewHolder。提供了根据viewId获取View的方法。
  *     revise: https://github.com/yangchong211/YCGroupAdapter
  * </pre>

@@ -5,7 +5,7 @@ package com.ycbjie.adapter;
  * <pre>
  *     @author yangchong
  *     blog  : https://github.com/yangchong211
- *     time  : 2019/9/18
+ *     time  : 2018/9/18
  *     desc  : 这个类是用来记录分组列表中组的结构的
  *     revise: 通过GroupStructure记录每个组是否有头部，是否有尾部和子项的数量。从而能方便的计算
  *             列表的长度和每个组的组头、组尾和子项在列表中的位置。
