@@ -1,13 +1,14 @@
 package com.ycbjie.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
      * @param recyclerView                          recyclerView
      */
     @Override
-    public void onAttachedToRecyclerView(@NotNull RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         structureChanged();
     }
@@ -68,7 +69,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
      * @param holder                                holder
      */
     @Override
-    public void onViewAttachedToWindow(@NotNull RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         //处理StaggeredGridLayout，保证组头和组尾占满一行。
         if (isStaggeredGridLayout(holder)) {
@@ -102,9 +103,9 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType != TYPE_NO){
             int layoutId = getLayoutId(itemType, viewType);
@@ -117,7 +118,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
-    public void onBindViewHolder(@NotNull final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         int type = judgeType(position);
         final int groupPosition = getGroupPositionForPosition(position);
         if (type == TYPE_HEADER) {
