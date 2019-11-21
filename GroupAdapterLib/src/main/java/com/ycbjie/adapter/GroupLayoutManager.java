@@ -14,12 +14,12 @@ import android.support.v7.widget.GridLayoutManager;
  *             自定义layoutManager，https://github.com/yangchong211/YCGroupAdapter
  * </pre>
  */
-public class GroupedLayoutManager extends GridLayoutManager {
+public class GroupLayoutManager extends GridLayoutManager {
 
-    private AbsGroupedAdapter mAdapter;
+    private AbsGroupAdapter mAdapter;
 
-    public GroupedLayoutManager(Context context, int spanCount,
-                                AbsGroupedAdapter adapter) {
+    public GroupLayoutManager(Context context, int spanCount,
+                              AbsGroupAdapter adapter) {
         super(context, spanCount);
         mAdapter = adapter;
         setSpanSizeLookup();
@@ -33,7 +33,7 @@ public class GroupedLayoutManager extends GridLayoutManager {
                 if (mAdapter != null) {
                     int type = mAdapter.judgeType(position);
                     //只对子项做Grid效果，让footer接在child之后
-                    if (type == AbsGroupedAdapter.TYPE_CHILD || type == AbsGroupedAdapter.TYPE_FOOTER) {
+                    if (type == AbsGroupAdapter.TYPE_CHILD || type == AbsGroupAdapter.TYPE_FOOTER) {
                         int groupPosition = mAdapter.getGroupPositionForPosition(position);
                         int childPosition = mAdapter.getChildPositionForPosition(groupPosition, position);
                         return getChildSpanSize(groupPosition, childPosition);

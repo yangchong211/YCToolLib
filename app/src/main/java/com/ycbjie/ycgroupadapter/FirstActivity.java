@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ycbjie.adapter.AbsGroupedAdapter;
+import com.ycbjie.adapter.AbsGroupAdapter;
 import com.ycbjie.adapter.GroupViewHolder;
-import com.ycbjie.adapter.GroupedLayoutManager;
+import com.ycbjie.adapter.GroupLayoutManager;
 import com.ycbjie.adapter.OnChildClickListener;
 import com.ycbjie.adapter.OnFooterClickListener;
 import com.ycbjie.adapter.OnHeaderClickListener;
@@ -31,7 +30,7 @@ public class FirstActivity extends AppCompatActivity {
         mAdapter = new GroupedFirstAdapter(this, list);
         mAdapter.setOnHeaderClickListener(new OnHeaderClickListener() {
             @Override
-            public void onHeaderClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+            public void onHeaderClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
                 Toast.makeText(FirstActivity.this,
                         "组头：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
@@ -39,7 +38,7 @@ public class FirstActivity extends AppCompatActivity {
         });
         mAdapter.setOnFooterClickListener(new OnFooterClickListener() {
             @Override
-            public void onFooterClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+            public void onFooterClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
                 Toast.makeText(FirstActivity.this,
                         "组尾：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
@@ -56,7 +55,7 @@ public class FirstActivity extends AppCompatActivity {
         });
         mAdapter.setOnChildClickListener(new OnChildClickListener() {
             @Override
-            public void onChildClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+            public void onChildClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                      int groupPosition, int childPosition) {
                 Toast.makeText(FirstActivity.this,"子项：groupPosition = " + groupPosition
                         + ", childPosition = " + childPosition,Toast.LENGTH_LONG).show();
@@ -64,7 +63,7 @@ public class FirstActivity extends AppCompatActivity {
         });
         mRecyclerView.setAdapter(mAdapter);
         //直接使用GroupGridLayoutManager实现子项的Grid效果
-        GroupedLayoutManager gridLayoutManager = new GroupedLayoutManager(this, 3, mAdapter){
+        GroupLayoutManager gridLayoutManager = new GroupLayoutManager(this, 3, mAdapter){
             //重写这个方法 改变子项的SpanSize。
             //这个跟重写SpanSizeLookup的getSpanSize方法的使用是一样的。
             @Override

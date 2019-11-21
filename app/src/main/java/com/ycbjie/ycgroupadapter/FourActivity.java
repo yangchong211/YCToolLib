@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.ycbjie.adapter.AbsGroupedAdapter;
+import com.ycbjie.adapter.AbsGroupAdapter;
 import com.ycbjie.adapter.GroupViewHolder;
 import com.ycbjie.adapter.OnChildClickListener;
 import com.ycbjie.adapter.OnFooterClickListener;
@@ -32,7 +32,7 @@ public class FourActivity extends AppCompatActivity {
         mAdapter = new GroupedFourAdapter(this, list);
         mAdapter.setOnHeaderClickListener(new OnHeaderClickListener() {
             @Override
-            public void onHeaderClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+            public void onHeaderClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
                 Toast.makeText(FourActivity.this,
                         "组头：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
@@ -46,7 +46,7 @@ public class FourActivity extends AppCompatActivity {
         });
         mAdapter.setOnFooterClickListener(new OnFooterClickListener() {
             @Override
-            public void onFooterClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+            public void onFooterClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
                 Toast.makeText(FourActivity.this,
                         "组尾：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
@@ -54,7 +54,7 @@ public class FourActivity extends AppCompatActivity {
         });
         mAdapter.setOnChildClickListener(new OnChildClickListener() {
             @Override
-            public void onChildClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+            public void onChildClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                      int groupPosition, int childPosition) {
                 Toast.makeText(FourActivity.this,"子项：groupPosition = " + groupPosition
                         + ", childPosition = " + childPosition,Toast.LENGTH_LONG).show();

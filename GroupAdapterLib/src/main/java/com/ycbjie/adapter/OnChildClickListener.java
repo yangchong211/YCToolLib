@@ -17,6 +17,6 @@ public interface OnChildClickListener {
      * @param groupPosition                     group索引
      * @param childPosition                     group中的child索引
      */
-    void onChildClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
+    void onChildClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                       int groupPosition, int childPosition);
 }

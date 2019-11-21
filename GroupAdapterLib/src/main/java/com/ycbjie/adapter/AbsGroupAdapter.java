@@ -20,11 +20,11 @@ import java.util.ArrayList;
  *     desc  : 通用的分组列表Adapter，通过它可以很方便的实现列表的分组效果。
  *     revise: 这个类提供了一系列的对列表的更新、删除和插入等操作的方法。
  *             使用者要使用这些方法的列表进行操作，而不要直接使用RecyclerView.Adapter的方法。
- *             因为当分组列表发生变化时，需要及时更新分组列表的组结构{@link AbsGroupedAdapter#mStructures}
+ *             因为当分组列表发生变化时，需要及时更新分组列表的组结构{@link AbsGroupAdapter#mStructures}
  *             https://github.com/yangchong211/YCGroupAdapter
  * </pre>
  */
-public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 1;
     static final int TYPE_FOOTER = 2;
@@ -54,7 +54,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
     private LayoutInflater inflater;
 
 
-    public AbsGroupedAdapter(Context context) {
+    public AbsGroupAdapter(Context context) {
         mContext = context;
         registerAdapterDataObserver(new GroupDataObserver());
         inflater = LayoutInflater.from(mContext);
@@ -137,7 +137,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
                     @Override
                     public void onClick(View v) {
                         if (mOnHeaderClickListener != null) {
-                            mOnHeaderClickListener.onHeaderClick(AbsGroupedAdapter.this,
+                            mOnHeaderClickListener.onHeaderClick(AbsGroupAdapter.this,
                                     (GroupViewHolder) holder, groupPosition);
                         }
                     }
@@ -150,7 +150,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
                     @Override
                     public void onClick(View v) {
                         if (mOnFooterClickListener != null) {
-                            mOnFooterClickListener.onFooterClick(AbsGroupedAdapter.this,
+                            mOnFooterClickListener.onFooterClick(AbsGroupAdapter.this,
                                     (GroupViewHolder) holder, groupPosition);
                         }
                     }
@@ -164,7 +164,7 @@ public abstract class AbsGroupedAdapter extends RecyclerView.Adapter<RecyclerVie
                     @Override
                     public void onClick(View v) {
                         if (mOnChildClickListener != null) {
-                            mOnChildClickListener.onChildClick(AbsGroupedAdapter.this,
+                            mOnChildClickListener.onChildClick(AbsGroupAdapter.this,
                                     (GroupViewHolder) holder, groupPosition, childPosition);
                         }
                     }

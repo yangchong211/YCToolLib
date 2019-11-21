@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ycbjie.adapter.AbsGroupedAdapter;
+import com.ycbjie.adapter.AbsGroupAdapter;
 import com.ycbjie.adapter.GroupViewHolder;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
  *     revise:
  * </pre>
  */
-public class GroupedFirstAdapter extends AbsGroupedAdapter {
+public class GroupedFirstAdapter extends AbsGroupAdapter {
 
     private List<GroupEntity> mGroups;
 

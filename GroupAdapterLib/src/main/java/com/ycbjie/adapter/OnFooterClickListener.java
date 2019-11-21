@@ -16,5 +16,5 @@ public interface OnFooterClickListener {
      * @param holder                            holder
      * @param groupPosition                     group索引
      */
-    void onFooterClick(AbsGroupedAdapter adapter, GroupViewHolder holder, int groupPosition);
+    void onFooterClick(AbsGroupAdapter adapter, GroupViewHolder holder, int groupPosition);
 }

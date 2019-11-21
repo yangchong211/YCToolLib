@@ -16,5 +16,5 @@ public interface OnHeaderClickListener {
      * @param holder                            holder
      * @param groupPosition                     group索引
      */
-    void onHeaderClick(AbsGroupedAdapter adapter, GroupViewHolder holder, int groupPosition);
+    void onHeaderClick(AbsGroupAdapter adapter, GroupViewHolder holder, int groupPosition);
 }
