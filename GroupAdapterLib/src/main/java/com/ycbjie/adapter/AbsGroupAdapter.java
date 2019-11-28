@@ -229,6 +229,7 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     private int count() {
+        //获取所有数量
         return countGroupRangeItem(0, mStructures.size());
     }
 
@@ -332,7 +333,7 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      * @param groupPosition 组下标
      * @return 下标
      */
-    public int getPositionForGroupHeader(int groupPosition) {
+    private int getPositionForGroupHeader(int groupPosition) {
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
             GroupStructure structure = mStructures.get(groupPosition);
             if (!structure.hasHeader()) {
@@ -415,31 +416,12 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     //****** 刷新操作 *****//
-
-    /**
-     * Use {@link #notifyDataChanged()} instead.
-     */
-    @Deprecated
-    public void changeDataSet() {
-        notifyDataChanged();
-    }
-
     /**
      * 通知数据列表刷新
      */
     public void notifyDataChanged() {
         isDataChanged = true;
         notifyDataSetChanged();
-    }
-
-    /**
-     * Use {@link #notifyGroupChanged(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void changeGroup(int groupPosition) {
-        notifyGroupChanged(groupPosition);
     }
 
     /**
@@ -453,17 +435,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (index >= 0 && itemCount > 0) {
             notifyItemRangeChanged(index, itemCount);
         }
-    }
-
-    /**
-     * Use {@link #notifyGroupRangeChanged(int, int)} instead.
-     *
-     * @param groupPosition
-     * @param count
-     */
-    @Deprecated
-    public void changeRangeGroup(int groupPosition, int count) {
-        notifyGroupRangeChanged(groupPosition, count);
     }
 
     /**
@@ -485,16 +456,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyHeaderChanged(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void changeHeader(int groupPosition) {
-        notifyHeaderChanged(groupPosition);
-    }
-
-    /**
      * 通知组头刷新
      *
      * @param groupPosition
@@ -504,16 +465,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (index >= 0) {
             notifyItemChanged(index);
         }
-    }
-
-    /**
-     * Use {@link #notifyFooterChanged(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void changeFooter(int groupPosition) {
-        notifyFooterChanged(groupPosition);
     }
 
     /**
@@ -530,17 +481,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyChildChanged(int, int)} instead.
-     *
-     * @param groupPosition
-     * @param childPosition
-     */
-    @Deprecated
-    public void changeChild(int groupPosition, int childPosition) {
-        notifyChildChanged(groupPosition, childPosition);
-    }
-
-    /**
      * 通知一组里的某个子项刷新
      *
      * @param groupPosition
@@ -551,18 +491,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (index >= 0) {
             notifyItemChanged(index);
         }
-    }
-
-    /**
-     * Use {@link #notifyChildRangeChanged(int, int, int)} instead.
-     *
-     * @param groupPosition
-     * @param childPosition
-     * @param count
-     */
-    @Deprecated
-    public void changeRangeChild(int groupPosition, int childPosition, int count) {
-        notifyChildRangeChanged(groupPosition, childPosition, count);
     }
 
     /**
@@ -587,16 +515,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyChildrenChanged(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void changeChildren(int groupPosition) {
-        notifyChildrenChanged(groupPosition);
-    }
-
-    /**
      * 通知一组里的所有子项刷新
      *
      * @param groupPosition
@@ -612,29 +530,12 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     //****** 删除操作 *****//
-
-    /**
-     * Use {@link #notifyDataRemoved()} instead.
-     */
-    @Deprecated
-    public void removeAll() {
-        notifyDataRemoved();
-    }
-
     /**
      * 通知所有数据删除
      */
     public void notifyDataRemoved() {
         notifyItemRangeRemoved(0, getItemCount());
         mStructures.clear();
-    }
-
-    /**
-     * Use {@link #notifyGroupRemoved(int)} instead.
-     */
-    @Deprecated
-    public void removeGroup(int groupPosition) {
-        notifyGroupRemoved(groupPosition);
     }
 
     /**
@@ -650,14 +551,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             notifyItemRangeChanged(index, getItemCount() - itemCount);
             mStructures.remove(groupPosition);
         }
-    }
-
-    /**
-     * Use {@link #notifyGroupRangeRemoved(int, int)} instead.
-     */
-    @Deprecated
-    public void removeRangeGroup(int groupPosition, int count) {
-        notifyGroupRangeRemoved(groupPosition, count);
     }
 
     /**
@@ -683,14 +576,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyHeaderRemoved(int)} instead.
-     */
-    @Deprecated
-    public void removeHeader(int groupPosition) {
-        notifyHeaderRemoved(groupPosition);
-    }
-
-    /**
      * 通知组头删除
      *
      * @param groupPosition
@@ -705,16 +590,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             structure.setHasHeader(false);
         }
-    }
-
-    /**
-     * Use {@link #notifyFooterRemoved(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void removeFooter(int groupPosition) {
-        notifyFooterRemoved(groupPosition);
     }
 
     /**
@@ -737,47 +612,22 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyChildRemoved(int, int)} instead.
-     *
-     * @param groupPosition
-     * @param childPosition
-     */
-    @Deprecated
-    public void removeChild(int groupPosition, int childPosition) {
-        if (mStructures.size()>groupPosition){
-            notifyChildRemoved(groupPosition, childPosition);
-        }
-    }
-
-    /**
      * 通知一组里的某个子项删除
      *
      * @param groupPosition
      * @param childPosition
      */
     public void notifyChildRemoved(int groupPosition, int childPosition) {
-        int index = getPositionForChild(groupPosition, childPosition);
-        if (index >= 0) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            notifyItemRemoved(index);
-            if (getItemCount() > index){
-                notifyItemRangeChanged(index, getItemCount() - index);
-            }
-            structure.setChildrenCount(structure.getChildrenCount() - 1);
-        }
-    }
-
-    /**
-     * Use {@link #notifyChildRangeRemoved(int, int, int)} instead.
-     *
-     * @param groupPosition
-     * @param childPosition
-     * @param count
-     */
-    @Deprecated
-    public void removeRangeChild(int groupPosition, int childPosition, int count) {
         if (mStructures.size()>groupPosition){
-            notifyChildRangeRemoved(groupPosition, childPosition, count);
+            int index = getPositionForChild(groupPosition, childPosition);
+            if (index >= 0) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                notifyItemRemoved(index);
+                if (getItemCount() > index){
+                    notifyItemRangeChanged(index, getItemCount() - index);
+                }
+                structure.setChildrenCount(structure.getChildrenCount() - 1);
+            }
         }
     }
 
@@ -789,7 +639,7 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      * @param count
      */
     public void notifyChildRangeRemoved(int groupPosition, int childPosition, int count) {
-        if (groupPosition < mStructures.size()) {
+        if (mStructures.size()>groupPosition){
             int index = getPositionForChild(groupPosition, childPosition);
             if (index >= 0) {
                 GroupStructure structure = mStructures.get(groupPosition);
@@ -802,18 +652,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
                 notifyItemRangeChanged(index, getItemCount() - removeCount);
                 structure.setChildrenCount(childCount - removeCount);
             }
-        }
-    }
-
-    /**
-     * Use {@link #notifyChildrenRemoved(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void removeChildren(int groupPosition) {
-        if (mStructures.size()>groupPosition){
-            notifyChildrenRemoved(groupPosition);
         }
     }
 
@@ -838,16 +676,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     //****** 插入操作 *****//
 
     /**
-     * Use {@link #notifyGroupInserted(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void insertGroup(int groupPosition) {
-        notifyGroupInserted(groupPosition);
-    }
-
-    /**
      * 通知一组数据插入
      *
      * @param groupPosition
@@ -870,17 +698,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
                 notifyItemRangeChanged(index + itemCount, getItemCount() - index);
             }
         }
-    }
-
-    /**
-     * Use {@link #notifyGroupRangeInserted(int, int)} instead.
-     *
-     * @param groupPosition
-     * @param count
-     */
-    @Deprecated
-    public void insertRangeGroup(int groupPosition, int count) {
-        notifyGroupRangeInserted(groupPosition, count);
     }
 
     /**
@@ -912,16 +729,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyHeaderInserted(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void insertHeader(int groupPosition) {
-        notifyHeaderInserted(groupPosition);
-    }
-
-    /**
      * 通知组头插入
      *
      * @param groupPosition
@@ -939,16 +746,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     /**
-     * Use {@link #notifyFooterInserted(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void insertFooter(int groupPosition) {
-        notifyFooterInserted(groupPosition);
-    }
-
-    /**
      * 通知组尾插入
      *
      * @param groupPosition
@@ -963,17 +760,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
                 notifyItemRangeChanged(index + 1, getItemCount() - index);
             }
         }
-    }
-
-    /**
-     * Use {@link #notifyChildInserted(int, int)} instead.
-     *
-     * @param groupPosition
-     * @param childPosition
-     */
-    @Deprecated
-    public void insertChild(int groupPosition, int childPosition) {
-        notifyChildInserted(groupPosition, childPosition);
     }
 
     /**
@@ -997,18 +783,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
                 notifyItemRangeChanged(index + 1, getItemCount() - index);
             }
         }
-    }
-
-    /**
-     * Use {@link #notifyChildRangeInserted(int, int, int)} instead.
-     *
-     * @param groupPosition
-     * @param childPosition
-     * @param count
-     */
-    @Deprecated
-    public void insertRangeChild(int groupPosition, int childPosition, int count) {
-        notifyChildRangeInserted(groupPosition, childPosition, count);
     }
 
     /**
@@ -1048,16 +822,6 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
 
             }
         }
-    }
-
-    /**
-     * Use {@link #notifyChildrenInserted(int)} instead.
-     *
-     * @param groupPosition
-     */
-    @Deprecated
-    public void insertChildren(int groupPosition) {
-        notifyChildrenInserted(groupPosition);
     }
 
     /**
@@ -1162,8 +926,5 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             isDataChanged = true;
         }
     }
-
-
-
 
 }

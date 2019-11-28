@@ -34,7 +34,7 @@
 #### 2.1 如何引入
 - 如下所示
     ```
-    implementation 'cn.yc:GroupAdapterLib:1.0.0'
+    implementation 'cn.yc:GroupAdapterLib:1.0.2'
     ```
 
 
@@ -125,6 +125,44 @@
 
 
 #### 3.2 notify相关
+- 插入数据
+    ```
+    //通知一组数据插入
+    mAdapter.notifyGroupInserted(1);
+    //通知一个子项到组里插入
+    mAdapter.notifyChildInserted(1,3);
+    //通知一组里的多个子项插入
+    mAdapter.notifyChildRangeInserted(1,2,10);
+    //通知一组里的所有子项插入
+    mAdapter.notifyChildrenInserted(1);
+    //通知多组数据插入
+    mAdapter.notifyGroupRangeInserted(1,3);
+    //通知组头插入
+    mAdapter.notifyHeaderInserted(1);
+    //通知组尾插入
+    mAdapter.notifyFooterInserted(1);
+    ```
+- 移除数据
+    ```
+    //通知所有数据删除
+    mAdapter.notifyDataRemoved();
+    //通知一组数据删除，包括组头,组尾和子项
+    mAdapter.notifyGroupRemoved(1);
+    //通知多组数据删除，包括组头,组尾和子项
+    mAdapter.notifyGroupRangeRemoved(1,3);
+    //通知组头删除
+    mAdapter.notifyHeaderRemoved(1);
+    //通知组尾删除
+    mAdapter.notifyFooterRemoved(1);
+    //通知一组里的某个子项删除
+    mAdapter.notifyChildRemoved(1,3);
+    //通知一组里的多个子项删除
+    mAdapter.notifyChildRangeRemoved(1,3,4);
+    //通知一组里的所有子项删除
+    mAdapter.notifyChildrenRemoved(1);
+    ```
+
+
 
 
 #### 3.3 点击事件listener
@@ -156,4 +194,31 @@
     });
     ```
 
+
+#### 其他推荐说明
+- 1.[技术博客汇总](https://www.jianshu.com/p/614cb839182c)
+- 2.[开源项目汇总](https://blog.csdn.net/m0_37700275/article/details/80863574)
+- 3.[生活博客汇总](https://blog.csdn.net/m0_37700275/article/details/79832978)
+- 4.[喜马拉雅音频汇总](https://www.jianshu.com/p/f665de16d1eb)
+- 5.[其他汇总](https://www.jianshu.com/p/53017c3fc75d)
+- 6.[重点推荐：博客笔记大汇总，开源文件都是md格式](https://github.com/yangchong211/YCBlogs)
+
+
+
+#### 关于LICENSE
+```
+Copyright 2017 yangchong211（github.com/yangchong211）
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 

@@ -50,6 +50,7 @@ public class FirstActivity extends AppCompatActivity {
                 for (int j = 0; j < 10; j++) {
                     children.add(new ChildEntity("逗比"));
                 }
+                //通知一组里的多个子项插入
                 mAdapter.notifyChildRangeInserted(groupPosition,size,10);
             }
         });
@@ -104,4 +105,45 @@ public class FirstActivity extends AppCompatActivity {
         }
         return groups;
     }
+
+
+
+    private void testApi(){
+        //通知一组数据插入
+        mAdapter.notifyGroupInserted(1);
+        //通知一个子项到组里插入
+        mAdapter.notifyChildInserted(1,3);
+        //通知一组里的多个子项插入
+        mAdapter.notifyChildRangeInserted(1,2,10);
+        //通知一组里的所有子项插入
+        mAdapter.notifyChildrenInserted(1);
+        //通知多组数据插入
+        mAdapter.notifyGroupRangeInserted(1,3);
+        //通知组头插入
+        mAdapter.notifyHeaderInserted(1);
+        //通知组尾插入
+        mAdapter.notifyFooterInserted(1);
+
+
+        //移除数据操作
+        //通知所有数据删除
+        mAdapter.notifyDataRemoved();
+        //通知一组数据删除，包括组头,组尾和子项
+        mAdapter.notifyGroupRemoved(1);
+        //通知多组数据删除，包括组头,组尾和子项
+        mAdapter.notifyGroupRangeRemoved(1,3);
+        //通知组头删除
+        mAdapter.notifyHeaderRemoved(1);
+        //通知组尾删除
+        mAdapter.notifyFooterRemoved(1);
+        //通知一组里的某个子项删除
+        mAdapter.notifyChildRemoved(1,3);
+        //通知一组里的多个子项删除
+        mAdapter.notifyChildRangeRemoved(1,3,4);
+        //通知一组里的所有子项删除
+        mAdapter.notifyChildrenRemoved(1);
+    }
+
+
+
 }
