@@ -675,7 +675,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         }
         if (index >= 0 && itemCount > 0) {
             notifyItemRangeRemoved(index, itemCount);
-            notifyItemRangeChanged(index, getItemCount() - itemCount);
+            if (getItemCount() > itemCount){
+                notifyItemRangeChanged(index, getItemCount() - itemCount);
+            }
             mStructures.remove(groupPosition);
         }
     }
@@ -698,7 +700,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (index >= 0) {
             GroupStructure structure = mStructures.get(groupPosition);
             notifyItemRemoved(index);
-            notifyItemRangeChanged(index, getItemCount() - index);
+            if (getItemCount() > index){
+                notifyItemRangeChanged(index, getItemCount() - index);
+            }
             structure.setHasHeader(false);
         }
     }
@@ -756,7 +760,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (index >= 0) {
             GroupStructure structure = mStructures.get(groupPosition);
             notifyItemRemoved(index);
-            notifyItemRangeChanged(index, getItemCount() - index);
+            if (getItemCount() > index){
+                notifyItemRangeChanged(index, getItemCount() - index);
+            }
             structure.setChildrenCount(structure.getChildrenCount() - 1);
         }
     }
@@ -860,7 +866,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         int itemCount = countGroupItem(groupPosition);
         if (itemCount > 0) {
             notifyItemRangeInserted(index, itemCount);
-            notifyItemRangeChanged(index + itemCount, getItemCount() - index);
+            if (getItemCount() > index){
+                notifyItemRangeChanged(index + itemCount, getItemCount() - index);
+            }
         }
     }
 
@@ -924,7 +932,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             structure.setHasHeader(true);
             int index = countGroupRangeItem(0, groupPosition);
             notifyItemInserted(index);
-            notifyItemRangeChanged(index + 1, getItemCount() - index);
+            if (getItemCount() > index){
+                notifyItemRangeChanged(index + 1, getItemCount() - index);
+            }
         }
     }
 
@@ -949,7 +959,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             structure.setHasFooter(true);
             int index = countGroupRangeItem(0, groupPosition + 1);
             notifyItemInserted(index);
-            notifyItemRangeChanged(index + 1, getItemCount() - index);
+            if (getItemCount() > index){
+                notifyItemRangeChanged(index + 1, getItemCount() - index);
+            }
         }
     }
 
@@ -981,7 +993,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             }
             structure.setChildrenCount(structure.getChildrenCount() + 1);
             notifyItemInserted(index);
-            notifyItemRangeChanged(index + 1, getItemCount() - index);
+            if (getItemCount()>index){
+                notifyItemRangeChanged(index + 1, getItemCount() - index);
+            }
         }
     }
 
