@@ -19,7 +19,19 @@
 
 ### 01.前沿说明
 #### 1.1 案例展示效果
-- 
+- demo中的效果图
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/1.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/2.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/3.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/4.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/5.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/6.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/7.png)
+
+
+- 实际项目中的效果图
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/10.png)
+![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/11.png)
 
 
 #### 1.2 该库功能和优势
@@ -28,6 +40,9 @@
 - 支持局部插入刷新，局部移除刷新，也就是说可以按组插入或者移除数据，或者按组中child的某个未知插入或者移除数据。
 - 支持组中header，footer，child的各个视图view的自定义点击事件
 - 常见使用场景：仿懂车帝，汽车之家分组图片查看器；仿QQ联系人分组，可以折叠和伸展；以及复杂分组页面……
+
+
+
 
 
 ### 02.如何使用
