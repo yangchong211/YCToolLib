@@ -204,7 +204,19 @@
     
     }
     ```
-
+- 那么如何控制组中的header或者footer是否显示呢？
+    - 返回true表示显示，返回false表示不显示……就是这么简单
+    ```
+    @Override
+    public boolean hasHeader(int groupPosition) {
+        return true;
+    }
+    
+    @Override
+    public boolean hasFooter(int groupPosition) {
+        return true;
+    }
+    ```
 
 #### 3.2 notify相关
 - 插入数据
