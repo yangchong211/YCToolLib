@@ -34,13 +34,15 @@
 ![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/11.png)
 
 
+
+
 #### 1.2 该库功能和优势
 - 按组划分的自定义adapter适配器，一个recyclerView可以完成强大的group+children类型的业务需求。
 - 每组支持添加header，footer，children，且每一个都支持设置多类型type的view视图。
 - 支持局部插入刷新，局部移除刷新，也就是说可以按组插入或者移除数据，或者按组中child的某个未知插入或者移除数据。
-- 支持组中header，footer，child的各个视图view的自定义点击事件
+- 支持组中header，footer，child的各个视图view的自定义点击事件。且返回具体的索引！
 - 常见使用场景：仿懂车帝，汽车之家分组图片查看器；仿QQ联系人分组，可以折叠和伸展；以及复杂分组页面……
-
+- 添加了object同步锁处理adapter中data添加，获取和移除等方法，有效避免多线程或者其他操作导致数据错位或者偶发性fast-fail。
 
 
 
@@ -255,8 +257,6 @@
     //通知一组里的所有子项删除
     mAdapter.notifyChildrenRemoved(1);
     ```
-
-
 
 
 #### 3.3 点击事件listener
