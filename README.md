@@ -11,7 +11,12 @@
     - 3.1 自定义adapter
     - 3.2 notify相关
     - 3.3 点击事件listener
-- 04.问题反馈
+- 04.实现步骤
+    - 4.1 业务需求分析
+    - 4.2 adapter实现多type
+    - 4.3 这样写的弊端
+    - 4.4 分组实体bean
+    - 4.5 构建封装adapter
 - 05.优化相关
 - 06.关于参考
 - 07.其他说明介绍
@@ -293,6 +298,285 @@
         }
     });
     ```
+
+
+### 04.实现步骤
+#### 4.1 业务需求分析
+- 比如在app开发中，产品说实现一个QQ分组的功能，要求有收叠功能。同时在app中，图片相册，仿照懂车帝实现分组图片。看到这样一个需求，思考能否用一个recyclerView实现，使用type来区分不同类型布局。
+- RecyclerView 可以用ViewType来区分不同的item,也可以满足需求，但还是存在一些问题，比如：
+    - 1，在item过多逻辑复杂列表界面，Adapter里面的代码量庞大，逻辑复杂，后期难以维护。
+    - 2，每次增加一个列表都需要增加一个Adapter，重复搬砖，效率低下。
+    - 3，无法复用adapter，假如有多个页面有多个type，那么就要写多个adapter。
+    - 4，要是有局部刷新，那么就比较麻烦了，比如广告区也是一个九宫格的RecyclerView，点击局部刷新当前数据，比较麻烦。
+
+
+#### 4.2 adapter实现多个type
+- 通常写一个多Item列表的方法
+    - 根据不同的ViewType 处理不同的item，如果逻辑复杂，这个类的代码量是很庞大的。如果版本迭代添加新的需求，修改代码很麻烦，后期维护困难。
+- 主要操作步骤
+    - 在onCreateViewHolder中根据viewType参数，也就是getItemViewType的返回值来判断需要创建的ViewHolder类型
+    - 在onBindViewHolder方法中对ViewHolder的具体类型进行判断，分别为不同类型的ViewHolder进行绑定数据与逻辑处理
+- 代码如下所示
+    ```
+    public class HomePageAdapter extends RecyclerView.Adapter {
+        public static final int TYPE_BANNER = 0;
+        public static final int TYPE_AD = 1;
+        public static final int TYPE_TEXT = 2;
+        public static final int TYPE_IMAGE = 3;
+        public static final int TYPE_NEW = 4;
+        private List<HomePageEntry> mData;
+    
+        public void setData(List<HomePageEntry> data) {
+            mData = data;
+        }
+    
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            switch (viewType){
+                case TYPE_BANNER:
+                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_layout,null));
+                case TYPE_AD:
+                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_ad_item_layout,null));
+                case TYPE_TEXT:
+                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_text_item_layout,null));
+                case TYPE_IMAGE:
+                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_image_item_layout,null));
+                case TYPE_NEW:
+                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_news_item_layout,null));
+            }
+            return null;
+        }
+    
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            int type = getItemViewType(position);
+            switch (type){
+                case TYPE_BANNER:
+                    // banner 逻辑处理
+                    break;
+                case TYPE_AD:
+                    // 广告逻辑处理
+                    break;
+                case TYPE_TEXT:
+                    // 文本逻辑处理
+                    break;
+                case TYPE_IMAGE:
+                   //图片逻辑处理
+                    break;
+                case TYPE_NEW:
+                    //视频逻辑处理
+                    break;
+                // ... 此处省去N行代码
+            }
+        }
+    
+        @Override
+        public int getItemViewType(int position) {
+            if(position == 0){
+                return TYPE_BANNER;//banner在开头
+            }else {
+                return mData.get(position).type;//type 的值为TYPE_AD，TYPE_IMAGE，TYPE_AD，等其中一个
+            }
+    
+        }
+    
+        @Override
+        public int getItemCount() {
+            return mData == null ? 0:mData.size();
+        }
+    
+        public static class BannerViewHolder extends RecyclerView.ViewHolder{
+    
+            public BannerViewHolder(View itemView) {
+                super(itemView);
+                //绑定控件
+            }
+        }
+    
+        public static class NewViewHolder extends RecyclerView.ViewHolder{
+    
+            public VideoViewHolder(View itemView) {
+                super(itemView);
+                //绑定控件
+            }
+        }
+        
+        //省略部分代码
+    }
+    ```
+
+
+
+#### 4.3 这样写的弊端
+- 上面那样写的弊端
+    - 类型检查与类型转型，由于在onCreateViewHolder根据不同类型创建了不同的ViewHolder，所以在onBindViewHolder需要针对不同类型的ViewHolder进行数据绑定与逻辑处理，这导致需要通过instanceof对ViewHolder进行类型检查与类型转型。
+    - 不利于扩展，目前的需求是列表中存在5种布局类类型，那么如果需求变动，极端一点的情况就是数据源是从服务器获取的，数据中的model决定列表中的布局类型。这种情况下，每当model改变或model类型增加，我们都要去改变adapter中很多的代码，同时Adapter还必须知道特定的model在列表中的位置（position）除非跟服务端约定好，model（位置）不变，很显然，这是不现实的。
+    - 不利于维护，这点应该是上一点的延伸，随着列表中布局类型的增加与变更，getItemViewType、onCreateViewHolder、onBindViewHolder中的代码都需要变更或增加，Adapter 中的代码会变得臃肿与混乱，增加了代码的维护成本。
+
+
+#### 4.4 分组实体bean
+- 通过GroupStructure记录每个组是否有头部，是否有尾部和子项的数量。从而能方便的计算列表的长度和每个组的组头、组尾和子项在列表中的位置。
+
+
+#### 4.5 构建封装adapter
+- 核心目的就是三个
+    - 避免类的类型检查与类型转型
+    - 增强Adapter的扩展性
+    - 增强Adapter的可维护性
+- 当列表中类型增加或减少时Adapter中主要改动的就是getItemViewType、onCreateViewHolder、onBindViewHolder这三个方法，因此，我们就从这三个方法中开始着手。
+- 在getItemViewType方法中。
+    - if之类的逻辑判断简化代码，可以简单粗暴的用作为TYPE_HEADER，TYPE_FOOTER，TYPE_CHILD增加type标识。
+    - 既然是分组adapter，首先是获取组的索引，然后通过组的索引来判断type的类型，最后在返回具体的itemType类型。
+    ```
+    @Override
+    public int getItemViewType(int position) {
+        itemType = position;
+        int groupPosition = getGroupPositionForPosition(position);
+        int type = judgeType(position);
+        if (type == TYPE_HEADER) {
+            return getHeaderViewType(groupPosition);
+        } else if (type == TYPE_FOOTER) {
+            return getFooterViewType(groupPosition);
+        } else if (type == TYPE_CHILD) {
+            int childPosition = getChildPositionForPosition(groupPosition, position);
+            return getChildViewType(groupPosition, childPosition);
+        }
+        return super.getItemViewType(position);
+    }
+
+    /**
+     * 判断item的type 头部 尾部 和 子项
+     *
+     * @param position
+     * @return
+     */
+    public int judgeType(int position) {
+        int itemCount = 0;
+        //获取组的数量
+        int groupCount = mStructures.size();
+
+        for (int i = 0; i < groupCount; i++) {
+            GroupStructure structure = mStructures.get(i);
+
+            //判断是否有header头部view
+            if (structure.hasHeader()) {
+                itemCount += 1;
+                if (position < itemCount) {
+                    return TYPE_HEADER;
+                }
+            }
+
+            //获取孩子的数量
+            itemCount += structure.getChildrenCount();
+            if (position < itemCount) {
+                return TYPE_CHILD;
+            }
+
+            //判断是否有footer数量
+            if (structure.hasFooter()) {
+                itemCount += 1;
+                if (position < itemCount) {
+                    return TYPE_FOOTER;
+                }
+            }
+        }
+
+        //以防万一，为了避免在插入刷新，移除刷新时，避免索引越界异常，不要throw异常
+        //即使当 position == getItemCount() 为true时，可以用空页面替代
+        return TYPE_NO;
+        //throw new IndexOutOfBoundsException("can't determine the item type of the position." +
+        //        "position = " + position + ",item count = " + getItemCount());
+    }
+    //省略部分代码，具体可以看lib中源代码
+    ```
+- 在onCreateViewHolder方法中
+    - 创建viewHolder，主要作用是创建Item视图，并返回相应的ViewHolder。这个地方，需要注意一下，在分组控件中，能否把组的header，footer，children等布局暴露给外部开发者创建？
+    - 因此，这里需要区分类型，然后返回对应的布局，这里返回对应的布局几个方法，可以弄成抽象的方法，子类必须实现。让子类返回具体的header，footer，children布局。
+    ```
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        if (viewType != TYPE_NO){
+            int layoutId = getLayoutId(itemType, viewType);
+            if (inflater==null){
+                inflater = LayoutInflater.from(mContext);
+            }
+            view = inflater.inflate(layoutId, parent, false);
+        } else {
+            //使用空布局
+            //未知类型可以使用空布局代替
+            view = new View(parent.getContext());
+        }
+        return new GroupViewHolder(view);
+    }
+    
+    private int getLayoutId(int position, int viewType) {
+        int type = judgeType(position);
+        if (type == TYPE_HEADER) {
+            return getHeaderLayout(viewType);
+        } else if (type == TYPE_FOOTER) {
+            return getFooterLayout(viewType);
+        } else if (type == TYPE_CHILD) {
+            return getChildLayout(viewType);
+        }
+        return 0;
+    }
+    ```
+- 在onBindViewHolder方法中
+    - 这个方法中主要做两个事情，第一个是设置组中的header，footer，还有children的点击事件，并且需要返回具体的索引，包括组索引，和组中孩子的索引。
+    - 第二个是绑定viewHolder，主要作用是绑定数据到正确的Item视图上，这个可以把方法抽象，让子类去实现。
+    ```
+    @Override
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+        int type = judgeType(position);
+        final int groupPosition = getGroupPositionForPosition(position);
+        if (type == TYPE_HEADER) {
+            if (mOnHeaderClickListener != null) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnHeaderClickListener != null) {
+                            mOnHeaderClickListener.onHeaderClick(AbsGroupAdapter.this,
+                                    (GroupViewHolder) holder, groupPosition);
+                        }
+                    }
+                });
+            }
+            onBindHeaderViewHolder((GroupViewHolder) holder, groupPosition);
+        } else if (type == TYPE_FOOTER) {
+            if (mOnFooterClickListener != null) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnFooterClickListener != null) {
+                            mOnFooterClickListener.onFooterClick(AbsGroupAdapter.this,
+                                    (GroupViewHolder) holder, groupPosition);
+                        }
+                    }
+                });
+            }
+            onBindFooterViewHolder((GroupViewHolder) holder, groupPosition);
+        } else if (type == TYPE_CHILD) {
+            final int childPosition = getChildPositionForPosition(groupPosition, position);
+            if (mOnChildClickListener != null) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mOnChildClickListener != null) {
+                            mOnChildClickListener.onChildClick(AbsGroupAdapter.this,
+                                    (GroupViewHolder) holder, groupPosition, childPosition);
+                        }
+                    }
+                });
+            }
+            onBindChildViewHolder((GroupViewHolder) holder, groupPosition, childPosition);
+        }
+    }
+    ```
+- 封装后好处
+    - 拓展性——每组支持添加header，footer，children，且每一个都支持设置多类型type的view视图。而且支持局部插入刷新，局部移除刷新，也就是说可以按组插入或者移除数据，或者按组中child的某个未知插入或者移除数据。
+    - 可维护性——不同的列表类型由adapter添加header，footer，children类型处理，相互之间互不干扰，代码简洁，维护成本低。还可以灵活控制header，footer类型的布局是否可见，特别灵活！
 
 
 
