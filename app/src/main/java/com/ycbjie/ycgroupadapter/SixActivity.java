@@ -16,9 +16,9 @@ import com.ycbjie.adapter.OnHeaderClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FourActivity extends AppCompatActivity {
+public class SixActivity extends AppCompatActivity {
 
-    private GroupedFourAdapter mAdapter;
+    private GroupedFiveAdapter mAdapter;
     private List<GroupEntity> list = new ArrayList<>();
 
     @Override
@@ -29,26 +29,20 @@ public class FourActivity extends AppCompatActivity {
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new GroupedFourAdapter(this, list);
+        mAdapter = new GroupedFiveAdapter(this, list);
         mAdapter.setOnHeaderClickListener(new OnHeaderClickListener() {
             @Override
             public void onHeaderClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
-                Toast.makeText(FourActivity.this,
+                Toast.makeText(SixActivity.this,
                         "组头：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
-
-                if (mAdapter.isExpand(groupPosition)) {
-                    mAdapter.collapseGroup(groupPosition,true);
-                } else {
-                    mAdapter.expandGroup(groupPosition,true);
-                }
             }
         });
         mAdapter.setOnFooterClickListener(new OnFooterClickListener() {
             @Override
             public void onFooterClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
-                Toast.makeText(FourActivity.this,
+                Toast.makeText(SixActivity.this,
                         "组尾：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
             }
         });
@@ -56,7 +50,7 @@ public class FourActivity extends AppCompatActivity {
             @Override
             public void onChildClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                      int groupPosition, int childPosition) {
-                Toast.makeText(FourActivity.this,"子项：groupPosition = " + groupPosition
+                Toast.makeText(SixActivity.this,"子项：groupPosition = " + groupPosition
                         + ", childPosition = " + childPosition,Toast.LENGTH_LONG).show();
             }
         });
@@ -113,7 +107,7 @@ public class FourActivity extends AppCompatActivity {
                     break;
             }
             groups.add(new GroupEntity("第" + (i + 1) + "组头部",
-                    "第" + (i + 1) + "组尾部", children,true));
+                    "第" + (i + 1) + "组尾部", children));
         }
         return groups;
     }

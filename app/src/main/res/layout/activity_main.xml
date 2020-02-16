@@ -42,7 +42,7 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="4.仿照QQ分组那种可以折叠和伸展的分组视图" />
+        android:text="4.仿照QQ分组那种可以折叠和伸展的分组视图1" />
 
     <TextView
         android:id="@+id/tv_5"
@@ -51,7 +51,16 @@
         android:layout_marginTop="10dp"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:text="5.分组列表中的child视图支持多类型案例" />
+        android:text="5.仿照QQ分组那种可以折叠和伸展的分组视图2" />
+
+    <TextView
+        android:id="@+id/tv_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:text="6.分组列表中的child视图支持多类型案例" />
 
 
 

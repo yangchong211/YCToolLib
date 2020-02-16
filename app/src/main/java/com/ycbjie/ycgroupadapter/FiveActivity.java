@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FiveActivity extends AppCompatActivity {
 
-    private GroupedFiveAdapter mAdapter;
+    private GroupedFourAdapter mAdapter;
     private List<GroupEntity> list = new ArrayList<>();
 
     @Override
@@ -29,13 +29,19 @@ public class FiveActivity extends AppCompatActivity {
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new GroupedFiveAdapter(this, list);
+        mAdapter = new GroupedFourAdapter(this, list);
         mAdapter.setOnHeaderClickListener(new OnHeaderClickListener() {
             @Override
             public void onHeaderClick(AbsGroupAdapter adapter, GroupViewHolder holder,
                                       int groupPosition) {
                 Toast.makeText(FiveActivity.this,
                         "组头：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
+
+                if (mAdapter.isExpand(groupPosition)) {
+                    mAdapter.collapseGroup(groupPosition);
+                } else {
+                    mAdapter.expandGroup(groupPosition);
+                }
             }
         });
         mAdapter.setOnFooterClickListener(new OnFooterClickListener() {
@@ -57,6 +63,7 @@ public class FiveActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         getData();
+        mAdapter.collapseGroup();
     }
 
 
@@ -107,7 +114,7 @@ public class FiveActivity extends AppCompatActivity {
                     break;
             }
             groups.add(new GroupEntity("第" + (i + 1) + "组头部",
-                    "第" + (i + 1) + "组尾部", children));
+                    "第" + (i + 1) + "组尾部", children,true));
         }
         return groups;
     }

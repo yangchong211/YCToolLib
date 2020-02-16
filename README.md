@@ -195,6 +195,16 @@
     ```
 
 
+
+#### 参考案例说明
+- https://github.com/msdx/group-recycler-adapter
+- https://www.jianshu.com/p/7b5607a7fbe1
+- https://www.jianshu.com/p/26b0911f396f
+- https://github.com/donkingliang/GroupedRecyclerViewAdapter
+- https://www.jianshu.com/p/1558cbd20d17
+
+
+
 #### 其他推荐说明
 - 1.[技术博客汇总](https://www.jianshu.com/p/614cb839182c)
 - 2.[开源项目汇总](https://blog.csdn.net/m0_37700275/article/details/80863574)

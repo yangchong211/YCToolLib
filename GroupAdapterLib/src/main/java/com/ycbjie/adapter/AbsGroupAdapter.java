@@ -36,6 +36,7 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     private OnChildClickListener mOnChildClickListener;
 
     protected Context mContext;
+    private final Object mLock = new Object();
     /**
      * 保存分组列表的组结构
      */
@@ -281,12 +282,14 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      * 重置组结构列表
      */
     private void structureChanged() {
-        mStructures.clear();
-        int groupCount = getGroupCount();
-        for (int i = 0; i < groupCount; i++) {
-            mStructures.add(new GroupStructure(hasHeader(i), hasFooter(i), getChildrenCount(i)));
+        synchronized (mLock) {
+            mStructures.clear();
+            int groupCount = getGroupCount();
+            for (int i = 0; i < groupCount; i++) {
+                mStructures.add(new GroupStructure(hasHeader(i), hasFooter(i), getChildrenCount(i)));
+            }
+            isDataChanged = false;
         }
-        isDataChanged = false;
     }
 
     /**
@@ -317,11 +320,13 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     public int getChildPositionForPosition(int groupPosition, int position) {
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
             int itemCount = countGroupRangeItem(0, groupPosition + 1);
-            GroupStructure structure = mStructures.get(groupPosition);
-            int p = structure.getChildrenCount() - (itemCount - position)
-                    + (structure.hasFooter() ? 1 : 0);
-            if (p >= 0) {
-                return p;
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                int p = structure.getChildrenCount() - (itemCount - position)
+                        + (structure.hasFooter() ? 1 : 0);
+                if (p >= 0) {
+                    return p;
+                }
             }
         }
         return -1;
@@ -335,9 +340,11 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     private int getPositionForGroupHeader(int groupPosition) {
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            if (!structure.hasHeader()) {
-                return -1;
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                if (!structure.hasHeader()) {
+                    return -1;
+                }
             }
             return countGroupRangeItem(0, groupPosition);
         }
@@ -352,9 +359,11 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public int getPositionForGroupFooter(int groupPosition) {
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            if (!structure.hasFooter()) {
-                return -1;
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                if (!structure.hasFooter()) {
+                    return -1;
+                }
             }
             return countGroupRangeItem(0, groupPosition + 1) - 1;
         }
@@ -370,10 +379,12 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public int getPositionForChild(int groupPosition, int childPosition) {
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            if (structure.getChildrenCount() > childPosition) {
-                int itemCount = countGroupRangeItem(0, groupPosition);
-                return itemCount + childPosition + (structure.hasHeader() ? 1 : 0);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                if (structure.getChildrenCount() > childPosition) {
+                    int itemCount = countGroupRangeItem(0, groupPosition);
+                    return itemCount + childPosition + (structure.hasHeader() ? 1 : 0);
+                }
             }
         }
         return -1;
@@ -388,13 +399,15 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     public int countGroupItem(int groupPosition) {
         int itemCount = 0;
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            if (structure.hasHeader()) {
-                itemCount += 1;
-            }
-            itemCount += structure.getChildrenCount();
-            if (structure.hasFooter()) {
-                itemCount += 1;
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                if (structure.hasHeader()) {
+                    itemCount += 1;
+                }
+                itemCount += structure.getChildrenCount();
+                if (structure.hasFooter()) {
+                    itemCount += 1;
+                }
             }
         }
         return itemCount;
@@ -504,11 +517,13 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (groupPosition < mStructures.size()) {
             int index = getPositionForChild(groupPosition, childPosition);
             if (index >= 0) {
-                GroupStructure structure = mStructures.get(groupPosition);
-                if (structure.getChildrenCount() >= childPosition + count) {
-                    notifyItemRangeChanged(index, count);
-                } else {
-                    notifyItemRangeChanged(index, structure.getChildrenCount() - childPosition);
+                synchronized (mLock) {
+                    GroupStructure structure = mStructures.get(groupPosition);
+                    if (structure.getChildrenCount() >= childPosition + count) {
+                        notifyItemRangeChanged(index, count);
+                    } else {
+                        notifyItemRangeChanged(index, structure.getChildrenCount() - childPosition);
+                    }
                 }
             }
         }
@@ -523,8 +538,10 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (groupPosition >= 0 && groupPosition < mStructures.size()) {
             int index = getPositionForChild(groupPosition, 0);
             if (index >= 0) {
-                GroupStructure structure = mStructures.get(groupPosition);
-                notifyItemRangeChanged(index, structure.getChildrenCount());
+                synchronized (mLock) {
+                    GroupStructure structure = mStructures.get(groupPosition);
+                    notifyItemRangeChanged(index, structure.getChildrenCount());
+                }
             }
         }
     }
@@ -535,7 +552,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public void notifyDataRemoved() {
         notifyItemRangeRemoved(0, getItemCount());
-        mStructures.clear();
+        synchronized (mLock) {
+            mStructures.clear();
+        }
     }
 
     /**
@@ -549,7 +568,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (index >= 0 && itemCount > 0) {
             notifyItemRangeRemoved(index, itemCount);
             notifyItemRangeChanged(index, getItemCount() - itemCount);
-            mStructures.remove(groupPosition);
+            synchronized (mLock) {
+                mStructures.remove(groupPosition);
+            }
         }
     }
 
@@ -571,7 +592,9 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             if (getItemCount() > itemCount){
                 notifyItemRangeChanged(index, getItemCount() - itemCount);
             }
-            mStructures.remove(groupPosition);
+            synchronized (mLock) {
+                mStructures.remove(groupPosition);
+            }
         }
     }
 
@@ -583,12 +606,14 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     public void notifyHeaderRemoved(int groupPosition) {
         int index = getPositionForGroupHeader(groupPosition);
         if (index >= 0) {
-            GroupStructure structure = mStructures.get(groupPosition);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                structure.setHasHeader(false);
+            }
             notifyItemRemoved(index);
             if (getItemCount() > index){
                 notifyItemRangeChanged(index, getItemCount() - index);
             }
-            structure.setHasHeader(false);
         }
     }
 
@@ -601,13 +626,15 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         //如果index返回-1，则表示没有找到
         int index = getPositionForGroupFooter(groupPosition);
         if (index >= 0) {
-            GroupStructure structure = mStructures.get(groupPosition);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                //这个地方是将footer给移除
+                structure.setHasFooter(false);
+            }
             notifyItemRemoved(index);
             if (getItemCount() - index > 0){
                 notifyItemRangeChanged(index, getItemCount() - index);
             }
-            //这个地方是将footer给移除
-            structure.setHasFooter(false);
         }
     }
 
@@ -621,12 +648,14 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (mStructures.size()>groupPosition){
             int index = getPositionForChild(groupPosition, childPosition);
             if (index >= 0) {
-                GroupStructure structure = mStructures.get(groupPosition);
+                synchronized (mLock) {
+                    GroupStructure structure = mStructures.get(groupPosition);
+                    structure.setChildrenCount(structure.getChildrenCount() - 1);
+                }
                 notifyItemRemoved(index);
                 if (getItemCount() > index){
                     notifyItemRangeChanged(index, getItemCount() - index);
                 }
-                structure.setChildrenCount(structure.getChildrenCount() - 1);
             }
         }
     }
@@ -642,15 +671,17 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (mStructures.size()>groupPosition){
             int index = getPositionForChild(groupPosition, childPosition);
             if (index >= 0) {
-                GroupStructure structure = mStructures.get(groupPosition);
-                int childCount = structure.getChildrenCount();
-                int removeCount = count;
-                if (childCount < childPosition + count) {
-                    removeCount = childCount - childPosition;
+                synchronized (mLock) {
+                    GroupStructure structure = mStructures.get(groupPosition);
+                    int childCount = structure.getChildrenCount();
+                    int removeCount = count;
+                    if (childCount < childPosition + count) {
+                        removeCount = childCount - childPosition;
+                    }
+                    notifyItemRangeRemoved(index, removeCount);
+                    notifyItemRangeChanged(index, getItemCount() - removeCount);
+                    structure.setChildrenCount(childCount - removeCount);
                 }
-                notifyItemRangeRemoved(index, removeCount);
-                notifyItemRangeChanged(index, getItemCount() - removeCount);
-                structure.setChildrenCount(childCount - removeCount);
             }
         }
     }
@@ -664,11 +695,13 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (groupPosition < mStructures.size()) {
             int index = getPositionForChild(groupPosition, 0);
             if (index >= 0) {
-                GroupStructure structure = mStructures.get(groupPosition);
-                int itemCount = structure.getChildrenCount();
-                notifyItemRangeRemoved(index, itemCount);
-                notifyItemRangeChanged(index, getItemCount() - itemCount);
-                structure.setChildrenCount(0);
+                synchronized (mLock) {
+                    GroupStructure structure = mStructures.get(groupPosition);
+                    int itemCount = structure.getChildrenCount();
+                    notifyItemRangeRemoved(index, itemCount);
+                    notifyItemRangeChanged(index, getItemCount() - itemCount);
+                    structure.setChildrenCount(0);
+                }
             }
         }
     }
@@ -683,13 +716,14 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     public void notifyGroupInserted(int groupPosition) {
         GroupStructure structure = new GroupStructure(hasHeader(groupPosition),
                 hasFooter(groupPosition), getChildrenCount(groupPosition));
-        if (groupPosition < mStructures.size()) {
-            mStructures.add(groupPosition, structure);
-        } else {
-            mStructures.add(structure);
-            groupPosition = mStructures.size() - 1;
+        synchronized (mLock) {
+            if (groupPosition < mStructures.size()) {
+                mStructures.add(groupPosition, structure);
+            } else {
+                mStructures.add(structure);
+                groupPosition = mStructures.size() - 1;
+            }
         }
-
         int index = countGroupRangeItem(0, groupPosition);
         int itemCount = countGroupItem(groupPosition);
         if (itemCount > 0) {
@@ -712,12 +746,13 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
             GroupStructure structure = new GroupStructure(hasHeader(i), hasFooter(i), getChildrenCount(i));
             list.add(structure);
         }
-
-        if (groupPosition < mStructures.size()) {
-            mStructures.addAll(groupPosition, list);
-        } else {
-            mStructures.addAll(list);
-            groupPosition = mStructures.size() - list.size();
+        synchronized (mLock) {
+            if (groupPosition < mStructures.size()) {
+                mStructures.addAll(groupPosition, list);
+            } else {
+                mStructures.addAll(list);
+                groupPosition = mStructures.size() - list.size();
+            }
         }
 
         int index = countGroupRangeItem(0, groupPosition);
@@ -735,8 +770,10 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public void notifyHeaderInserted(int groupPosition) {
         if (groupPosition < mStructures.size() && 0 > getPositionForGroupHeader(groupPosition)) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            structure.setHasHeader(true);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                structure.setHasHeader(true);
+            }
             int index = countGroupRangeItem(0, groupPosition);
             notifyItemInserted(index);
             if (getItemCount() > index){
@@ -752,8 +789,10 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public void notifyFooterInserted(int groupPosition) {
         if (groupPosition < mStructures.size() && 0 > getPositionForGroupFooter(groupPosition)) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            structure.setHasFooter(true);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                structure.setHasFooter(true);
+            }
             int index = countGroupRangeItem(0, groupPosition + 1);
             notifyItemInserted(index);
             if (getItemCount() > index){
@@ -770,17 +809,19 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
      */
     public void notifyChildInserted(int groupPosition, int childPosition) {
         if (groupPosition < mStructures.size()) {
-            GroupStructure structure = mStructures.get(groupPosition);
-            int index = getPositionForChild(groupPosition, childPosition);
-            if (index < 0) {
-                index = countGroupRangeItem(0, groupPosition);
-                index += structure.hasHeader() ? 1 : 0;
-                index += structure.getChildrenCount();
-            }
-            structure.setChildrenCount(structure.getChildrenCount() + 1);
-            notifyItemInserted(index);
-            if (getItemCount()>index){
-                notifyItemRangeChanged(index + 1, getItemCount() - index);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                int index = getPositionForChild(groupPosition, childPosition);
+                if (index < 0) {
+                    index = countGroupRangeItem(0, groupPosition);
+                    index += structure.hasHeader() ? 1 : 0;
+                    index += structure.getChildrenCount();
+                }
+                structure.setChildrenCount(structure.getChildrenCount() + 1);
+                notifyItemInserted(index);
+                if (getItemCount()>index){
+                    notifyItemRangeChanged(index + 1, getItemCount() - index);
+                }
             }
         }
     }
@@ -797,29 +838,30 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
         if (groupPosition < mStructures.size()) {
             //计算多个组的项的总和
             int index = countGroupRangeItem(0, groupPosition);
-            //获取组的数据
-            GroupStructure structure = mStructures.get(groupPosition);
-            //判断是否组的头部header
-            if (structure.hasHeader()) {
-                index++;
-            }
-            //获取组中所有孩子的数量
-            if (childPosition < structure.getChildrenCount()) {
-                index += childPosition;
-            } else {
-                index += structure.getChildrenCount();
-            }
-            //count指的是插入数据的数量
-            if (count > 0) {
-                //设置所有孩子的数量
-                structure.setChildrenCount(structure.getChildrenCount() + count);
-                //插入数据刷新
-                notifyItemRangeInserted(index, count);
-                //保证刷新itemCount的数量必须大于0
-                if (getItemCount() - index > 0){
-                    notifyItemRangeChanged(index + count, getItemCount() - index);
+            synchronized (mLock) {
+                //获取组的数据
+                GroupStructure structure = mStructures.get(groupPosition);
+                //判断是否组的头部header
+                if (structure.hasHeader()) {
+                    index++;
                 }
-
+                //获取组中所有孩子的数量
+                if (childPosition < structure.getChildrenCount()) {
+                    index += childPosition;
+                } else {
+                    index += structure.getChildrenCount();
+                }
+                //count指的是插入数据的数量
+                if (count > 0) {
+                    //设置所有孩子的数量
+                    structure.setChildrenCount(structure.getChildrenCount() + count);
+                    //插入数据刷新
+                    notifyItemRangeInserted(index, count);
+                    //保证刷新itemCount的数量必须大于0
+                    if (getItemCount() - index > 0){
+                        notifyItemRangeChanged(index + count, getItemCount() - index);
+                    }
+                }
             }
         }
     }
@@ -832,16 +874,18 @@ public abstract class AbsGroupAdapter extends RecyclerView.Adapter<RecyclerView.
     public void notifyChildrenInserted(int groupPosition) {
         if (groupPosition < mStructures.size()) {
             int index = countGroupRangeItem(0, groupPosition);
-            GroupStructure structure = mStructures.get(groupPosition);
-            if (structure.hasHeader()) {
-                index++;
-            }
-            int itemCount = getChildrenCount(groupPosition);
-            if (itemCount > 0) {
-                structure.setChildrenCount(itemCount);
-                notifyItemRangeInserted(index, itemCount);
-                if (getItemCount() - index > 0){
-                    notifyItemRangeChanged(index + itemCount, getItemCount() - index);
+            synchronized (mLock) {
+                GroupStructure structure = mStructures.get(groupPosition);
+                if (structure.hasHeader()) {
+                    index++;
+                }
+                int itemCount = getChildrenCount(groupPosition);
+                if (itemCount > 0) {
+                    structure.setChildrenCount(itemCount);
+                    notifyItemRangeInserted(index, itemCount);
+                    if (getItemCount() - index > 0){
+                        notifyItemRangeChanged(index + itemCount, getItemCount() - index);
+                    }
                 }
             }
         }

@@ -164,4 +164,12 @@ public class GroupedFourAdapter extends AbsGroupAdapter {
         }
     }
 
+    public void collapseGroup() {
+        for (int i=0 ; i<mGroups.size() ; i++){
+            GroupEntity entity = mGroups.get(i);
+            entity.setExpand(false);
+        }
+        notifyDataChanged();
+    }
+
 }
