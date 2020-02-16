@@ -19,7 +19,7 @@
 
 ### 01.前沿说明
 #### 1.1 案例展示效果
-
+- 
 
 
 #### 1.2 该库功能和优势
@@ -34,7 +34,7 @@
 #### 2.1 如何引入
 - 如下所示
     ```
-    implementation 'cn.yc:GroupAdapterLib:1.0.2'
+    implementation 'cn.yc:GroupAdapterLib:1.0.3'
     ```
 
 
@@ -45,13 +45,80 @@
     mAdapter = new GroupedSecondAdapter(this, list);
     mRecyclerView.setAdapter(mAdapter);
     ```
-- 关于自定义adapter代码，直接看3.1代码
-
-
-
-#### 2.3 使用建议
-
-
+- 关于如何实现仿照QQ分组的功能
+    ```
+    /**
+     * 判断当前组是否展开
+     *
+     * @param groupPosition
+     * @return
+     */
+    public boolean isExpand(int groupPosition) {
+        GroupEntity entity = mGroups.get(groupPosition);
+        return entity.isExpand();
+    }
+    
+    /**
+     * 展开一个组
+     *
+     * @param groupPosition
+     */
+    public void expandGroup(int groupPosition) {
+        expandGroup(groupPosition, false);
+    }
+    
+    /**
+     * 展开一个组
+     *
+     * @param groupPosition
+     * @param animate
+     */
+    public void expandGroup(int groupPosition, boolean animate) {
+        GroupEntity entity = mGroups.get(groupPosition);
+        entity.setExpand(true);
+        if (animate) {
+            notifyChildrenInserted(groupPosition);
+        } else {
+            notifyDataChanged();
+        }
+    }
+    
+    /**
+     * 收起一个组
+     *
+     * @param groupPosition
+     */
+    public void collapseGroup(int groupPosition) {
+        collapseGroup(groupPosition, false);
+    }
+    
+    /**
+     * 收起一个组
+     *
+     * @param groupPosition
+     * @param animate
+     */
+    public void collapseGroup(int groupPosition, boolean animate) {
+        GroupEntity entity = mGroups.get(groupPosition);
+        entity.setExpand(false);
+        if (animate) {
+            notifyChildrenRemoved(groupPosition);
+        } else {
+            notifyDataChanged();
+        }
+    }
+    
+    /**
+     * 收起所有的组
+     */
+    public void collapseGroup() {
+        for (int i=0 ; i<mGroups.size() ; i++){
+            GroupEntity entity = mGroups.get(i);
+            entity.setExpand(false);
+        }
+        notifyDataChanged();
+    }
+    ```
 
 ### 03.常用api
 #### 3.1 自定义adapter
@@ -166,7 +233,7 @@
 
 
 #### 3.3 点击事件listener
-- 代码如下所示
+- 设置组header点击事件
     ```
     mAdapter.setOnHeaderClickListener(new OnHeaderClickListener() {
         @Override
@@ -176,6 +243,9 @@
                     "组头：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
         }
     });
+    ```
+- 设置组footer点击事件
+    ```
     mAdapter.setOnFooterClickListener(new OnFooterClickListener() {
         @Override
         public void onFooterClick(AbsGroupedAdapter adapter, GroupViewHolder holder,
@@ -184,6 +254,9 @@
                     "组尾：groupPosition = " + groupPosition,Toast.LENGTH_LONG).show();
         }
     });
+    ```
+- 设置组中children点击事件
+    ```
     mAdapter.setOnChildClickListener(new OnChildClickListener() {
         @Override
         public void onChildClick(AbsGroupedAdapter adapter, GroupViewHolder holder,

@@ -164,6 +164,9 @@ public class GroupedFourAdapter extends AbsGroupAdapter {
         }
     }
 
+    /**
+     * 收起所有的组
+     */
     public void collapseGroup() {
         for (int i=0 ; i<mGroups.size() ; i++){
             GroupEntity entity = mGroups.get(i);
