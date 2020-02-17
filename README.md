@@ -25,18 +25,18 @@
 ### 01.前沿说明
 #### 1.1 案例展示效果
 - demo中的效果图
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/1.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/2.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/3.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/4.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/5.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/6.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/7.png)
+- ![image](https://img-blog.csdnimg.cn/20200216114835550.png)
+![image](https://img-blog.csdnimg.cn/20200216114902608.png)
+![image](https://img-blog.csdnimg.cn/20200216115001459.png)
+![image](https://img-blog.csdnimg.cn/20200216115025781.png)
+![image](https://img-blog.csdnimg.cn/20200216115049203.png)
+![image](https://img-blog.csdnimg.cn/20200216115111852.png)
+![image](https://img-blog.csdnimg.cn/20200216115135178.png)
 
 
 - 实际项目中的效果图
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/10.png)
-![image](https://github.com/yangchong211/YCGroupAdapter/blob/master/image/11.png)
+- ![image](https://img-blog.csdnimg.cn/20200216115157836.png)
+![image](https://img-blog.csdnimg.cn/20200216115220512.png)
 
 
 
@@ -319,11 +319,9 @@
 - 代码如下所示
     ```
     public class HomePageAdapter extends RecyclerView.Adapter {
-        public static final int TYPE_BANNER = 0;
-        public static final int TYPE_AD = 1;
-        public static final int TYPE_TEXT = 2;
+        public static final int TYPE_HEADER = 1;
+        public static final int TYPE_FOOTER = 2;
         public static final int TYPE_IMAGE = 3;
-        public static final int TYPE_NEW = 4;
         private List<HomePageEntry> mData;
     
         public void setData(List<HomePageEntry> data) {
@@ -333,16 +331,12 @@
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType){
-                case TYPE_BANNER:
-                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_layout,null));
-                case TYPE_AD:
-                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_ad_item_layout,null));
-                case TYPE_TEXT:
-                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_text_item_layout,null));
-                case TYPE_IMAGE:
-                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_image_item_layout,null));
-                case TYPE_NEW:
-                    return new BannerViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_news_item_layout,null));
+                case TYPE_HEADER:
+                    return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_ad_item_layout,null));
+                case TYPE_FOOTER:
+                    return new FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_text_item_layout,null));
+                case TYPE_CHILD:
+                    return new ChildViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_image_item_layout,null));
             }
             return null;
         }
@@ -351,33 +345,21 @@
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             int type = getItemViewType(position);
             switch (type){
-                case TYPE_BANNER:
-                    // banner 逻辑处理
+                case TYPE_HEADER:
+                    // TYPE_HEADER 逻辑处理
                     break;
-                case TYPE_AD:
-                    // 广告逻辑处理
+                case TYPE_FOOTER:
+                    // TYPE_FOOTER 逻辑处理
                     break;
-                case TYPE_TEXT:
-                    // 文本逻辑处理
+                case TYPE_CHILD:
+                    // TYPE_CHILD 逻辑处理
                     break;
-                case TYPE_IMAGE:
-                   //图片逻辑处理
-                    break;
-                case TYPE_NEW:
-                    //视频逻辑处理
-                    break;
-                // ... 此处省去N行代码
             }
         }
     
         @Override
         public int getItemViewType(int position) {
-            if(position == 0){
-                return TYPE_BANNER;//banner在开头
-            }else {
-                return mData.get(position).type;//type 的值为TYPE_AD，TYPE_IMAGE，TYPE_AD，等其中一个
-            }
-    
+             return mData.get(position).type;//type 的值为TYPE_HEADER，TYPE_FOOTER，TYPE_AD，等其中一个
         }
     
         @Override
@@ -385,22 +367,12 @@
             return mData == null ? 0:mData.size();
         }
     
-        public static class BannerViewHolder extends RecyclerView.ViewHolder{
-    
-            public BannerViewHolder(View itemView) {
+        public static class HeaderViewHolder extends RecyclerView.ViewHolder{
+            public HeaderViewHolder(View itemView) {
                 super(itemView);
                 //绑定控件
             }
         }
-    
-        public static class NewViewHolder extends RecyclerView.ViewHolder{
-    
-            public VideoViewHolder(View itemView) {
-                super(itemView);
-                //绑定控件
-            }
-        }
-        
         //省略部分代码
     }
     ```
@@ -410,8 +382,9 @@
 #### 4.3 这样写的弊端
 - 上面那样写的弊端
     - 类型检查与类型转型，由于在onCreateViewHolder根据不同类型创建了不同的ViewHolder，所以在onBindViewHolder需要针对不同类型的ViewHolder进行数据绑定与逻辑处理，这导致需要通过instanceof对ViewHolder进行类型检查与类型转型。
-    - 不利于扩展，目前的需求是列表中存在5种布局类类型，那么如果需求变动，极端一点的情况就是数据源是从服务器获取的，数据中的model决定列表中的布局类型。这种情况下，每当model改变或model类型增加，我们都要去改变adapter中很多的代码，同时Adapter还必须知道特定的model在列表中的位置（position）除非跟服务端约定好，model（位置）不变，很显然，这是不现实的。
     - 不利于维护，这点应该是上一点的延伸，随着列表中布局类型的增加与变更，getItemViewType、onCreateViewHolder、onBindViewHolder中的代码都需要变更或增加，Adapter 中的代码会变得臃肿与混乱，增加了代码的维护成本。
+    - 比如，在分组控件中，类似QQ分组那样，点击组中的header，可以切换关闭和伸展该组中children的自选项item，那么如果不封装，adapter对数据处理也比较麻烦。
+    - 有时候，在分组控件中，有的组不想显示header，有的组不想显示footer，那么这个时候就不太灵活。能否使用一个开关方法来控制header和footer的显示和隐藏呢？
 
 
 #### 4.4 分组实体bean
