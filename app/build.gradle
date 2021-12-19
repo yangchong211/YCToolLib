@@ -22,8 +22,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation project(':GroupAdapterLib')
-//    implementation 'cn.yc:GroupAdapterLib:1.0.3'
+//    implementation project(':GroupAdapterLib')
+    implementation 'com.github.yangchong211:YCGroupAdapter:1.0.6'
 }
 
 

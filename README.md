@@ -56,7 +56,7 @@
 #### 2.1 如何引入
 - 如下所示
     ```
-    implementation 'cn.yc:GroupAdapterLib:1.0.3'
+    implementation 'com.github.yangchong211:YCGroupAdapter:1.0.6'
     ```
 
 
@@ -551,14 +551,6 @@
     - 拓展性——每组支持添加header，footer，children，且每一个都支持设置多类型type的view视图。而且支持局部插入刷新，局部移除刷新，也就是说可以按组插入或者移除数据，或者按组中child的某个未知插入或者移除数据。
     - 可维护性——不同的列表类型由adapter添加header，footer，children类型处理，相互之间互不干扰，代码简洁，维护成本低。还可以灵活控制header，footer类型的布局是否可见，特别灵活！
 
-
-
-#### 参考案例说明
-- https://github.com/msdx/group-recycler-adapter
-- https://www.jianshu.com/p/7b5607a7fbe1
-- https://www.jianshu.com/p/26b0911f396f
-- https://github.com/donkingliang/GroupedRecyclerViewAdapter
-- https://www.jianshu.com/p/1558cbd20d17
 
 
 
