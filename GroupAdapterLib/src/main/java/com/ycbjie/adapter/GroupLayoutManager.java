@@ -1,7 +1,8 @@
 package com.ycbjie.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
+
+import androidx.recyclerview.widget.GridLayoutManager;
 
 /**
  * <pre>
