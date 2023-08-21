@@ -23,18 +23,23 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.github.yangchong211:YCGroupAdapter:1.0.6'
-    implementation 'com.github.yangchong211.YCToolLib:InterceptorTime:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:SocketIoLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:AppProcessLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:WebSocketLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:CountTimerLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:AutoCloserLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:AppTraceTool:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:ZxingServerLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:ZXingCodeLib:1.0.7'
-    implementation 'com.github.yangchong211.YCToolLib:LocaleHelperLib:1.0.7'
-
-
+    implementation 'com.github.yangchong211.YCToolLib:InterceptorTime:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:SocketIoLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:AppProcessLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:WebSocketLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:CountTimerLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:AutoCloserLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:AppTraceTool:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:ZxingServerLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:ZXingCodeLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:LocaleHelperLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:LooperThread:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:TransitionHelper:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:NtpTimeLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:LongAliveLib:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:AppTraceTool:1.0.8'
+    implementation 'com.github.yangchong211.YCToolLib:SerialTaskLib:1.0.8'
+    
 }
 
 
