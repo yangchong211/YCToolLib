@@ -1,1 +1,40 @@
-include ':app', ':GroupAdapterLib'
+include ':app'
+
+
+/* +++++++++ 框架基础工具库 +++++++++ */
+include ':ZxingServerLib', ':WebSocketLib', ':SocketIoLib', ':SerialTaskLib', ':EasySocket',
+        ':LocaleHelperLib', ':CountTimerLib', ':LocalShareLib', ':NtpTimeLib',':InterceptorTime',
+        ':AnimatorToolLib', ':AppTraceTool', ':LongAliveLib', ':EasyExecutor',':AdbHelper',
+        ':ThreadPoolLib', ':AutoCloserLib', ':AppProcessLib',':KeyEventLib',':LooperThread',
+        ':AnimatorHelper', ':ThreadDebugLib', ':LiveDataBus', ':AppUpdateLib', ':UsbInterface',
+        ':ZXingCodeLib', ':TransitionHelper', ':AnimBaseHelper'
+project(':ZxingServerLib').projectDir = new File('ZxingServerLib')
+project(':ZXingCodeLib').projectDir = new File('ZXingCodeLib')
+project(':WebSocketLib').projectDir = new File('WebSocketLib')
+project(':SocketIoLib').projectDir = new File('SocketIoLib')
+project(':SerialTaskLib').projectDir = new File('SerialTaskLib')
+project(':KeyEventLib').projectDir = new File('KeyEventLib')
+project(':LocaleHelperLib').projectDir = new File('LocaleHelperLib')
+project(':CountTimerLib').projectDir = new File('CountTimerLib')
+project(':AnimatorToolLib').projectDir = new File('AnimatorToolLib')
+project(':AppTraceTool').projectDir = new File('AppTraceTool')
+project(':LongAliveLib').projectDir = new File('LongAliveLib')
+project(':ThreadPoolLib').projectDir = new File('ThreadPoolLib')
+project(':AutoCloserLib').projectDir = new File('AutoCloserLib')
+project(':AppProcessLib').projectDir = new File('AppProcessLib')
+project(':EasyExecutor').projectDir = new File('EasyExecutor')
+project(':LocalShareLib').projectDir = new File('LocalShareLib')
+project(':AnimatorHelper').projectDir = new File('AnimatorHelper')
+project(':ThreadDebugLib').projectDir = new File('ThreadDebugLib')
+project(':LiveDataBus').projectDir = new File('LiveDataBus')
+project(':NtpTimeLib').projectDir = new File('NtpTimeLib')
+project(':UsbInterface').projectDir = new File('UsbInterface')
+project(':AppUpdateLib').projectDir = new File('AppUpdateLib')
+project(':TransitionHelper').projectDir = new File('TransitionHelper')
+project(':AnimBaseHelper').projectDir = new File('AnimBaseHelper')
+project(':EasySocket').projectDir = new File('EasySocket')
+project(':LooperThread').projectDir = new File('LooperThread')
+project(':InterceptorTime').projectDir = new File('InterceptorTime')
+project(':AdbHelper').projectDir = new File('AdbHelper')
+
+
