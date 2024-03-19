@@ -9,12 +9,17 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -23,6 +28,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.github.yangchong211:YCGroupAdapter:1.0.6'
+
+    implementation project(path: ':ZxingServerLib')
+    implementation project(path: ':ZXingCodeLib')
+
+
+
     implementation 'com.github.yangchong211.YCToolLib:InterceptorTime:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:SocketIoLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:AppProcessLib:1.0.8'
@@ -30,8 +41,8 @@ dependencies {
     implementation 'com.github.yangchong211.YCToolLib:CountTimerLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:AutoCloserLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:AppTraceTool:1.0.8'
-    implementation 'com.github.yangchong211.YCToolLib:ZxingServerLib:1.0.8'
-    implementation 'com.github.yangchong211.YCToolLib:ZXingCodeLib:1.0.8'
+//    implementation 'com.github.yangchong211.YCToolLib:ZxingServerLib:1.0.8'
+//    implementation 'com.github.yangchong211.YCToolLib:ZXingCodeLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:LocaleHelperLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:LooperThread:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:TransitionHelper:1.0.8'

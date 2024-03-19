@@ -4,6 +4,8 @@ import static com.yc.zxingcodelib.DecodeManager.QR_CODE_FORMATS;
 
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +20,6 @@ import com.yc.zxingserver.scan.DecodeFormatManager;
 public class EasyCaptureActivity extends CaptureActivity {
 
     public static final String KEY_TITLE = "key_title";
-    private boolean isContinuousScan;
     @Override
     public int getLayoutId() {
         return R.layout.easy_capture_activity;
@@ -48,7 +49,7 @@ public class EasyCaptureActivity extends CaptureActivity {
                 .frontLightMode(FrontLightMode.AUTO)//设置闪光灯模式
                 .tooDarkLux(45f)//设置光线太暗时，自动触发开启闪光灯的照度值
                 .brightEnoughLux(100f)//设置光线足够明亮时，自动触发关闭闪光灯的照度值
-                .continuousScan(false)//是否连扫
+                .continuousScan(true)//是否连扫
                 .supportLuminanceInvert(true);//是否支持识别反色码（黑白反色的码），增加识别率
 
         mIvLeft.setOnClickListener(new View.OnClickListener() {
@@ -66,10 +67,8 @@ public class EasyCaptureActivity extends CaptureActivity {
      */
     @Override
     public boolean onResultCallback(String result) {
-        if(isContinuousScan){//连续扫码时，直接弹出结果
-            Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-        }
-        return super.onResultCallback(result);
+        Log.d("扫码结果:",result);
+        return true;
     }
 
 }

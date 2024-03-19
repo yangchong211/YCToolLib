@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.yc.zxingserver.demo.EasyCaptureActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_1:
-                startActivity(new Intent(this,FirstActivity.class));
+                startActivity(new Intent(this, EasyCaptureActivity.class));
                 break;
             case R.id.tv_2:
                 startActivity(new Intent(this,SecondActivity.class));
