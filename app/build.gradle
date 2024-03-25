@@ -33,7 +33,7 @@ dependencies {
     implementation project(path: ':ZXingCodeLib')
 
 
-
+    implementation 'com.github.yangchong211.YCCommonLib:AppCommonInter:1.4.4'
     implementation 'com.github.yangchong211.YCToolLib:InterceptorTime:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:SocketIoLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:AppProcessLib:1.0.8'
@@ -50,7 +50,8 @@ dependencies {
     implementation 'com.github.yangchong211.YCToolLib:LongAliveLib:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:AppTraceTool:1.0.8'
     implementation 'com.github.yangchong211.YCToolLib:SerialTaskLib:1.0.8'
-    
+    implementation project(path: ':EasyTtsPlayer')
+
 }
 
 

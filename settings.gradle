@@ -38,3 +38,4 @@ project(':InterceptorTime').projectDir = new File('InterceptorTime')
 project(':AdbHelper').projectDir = new File('AdbHelper')
 
 
+include ':EasyTtsPlayer'
